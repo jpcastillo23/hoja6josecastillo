@@ -388,7 +388,7 @@ public class Panel_fondo extends JPanel implements ActionListener {
 	 */
 	public void showEverything(){  
 		ObjetoCliente nuevo,nuevo2;
-		int a,b,c,d,whm,timesup=0;
+		int a,b,c,d,whm=0,timesup=0;
 		int[] temp;
 		while(timesup<myListaEventos.size()){//<<<<<----------------------------------------------------------------
 		/**
@@ -448,21 +448,77 @@ public class Panel_fondo extends JPanel implements ActionListener {
 		System.out.println("--------O R D E N A N D O  C L I E N T E S ....--------------");
 		System.out.println("-------------------------------------------------------------\n");
 		ordenarPorTiempo(myListaEventos);
-		System.out.println(myListaEventos);
 		/**
 		 * Quitar comentario para ver Como la lista queda despues de Ordenar los Eventos, ya sea de 
 		 * entrada como de salida
 		 * System.out.println(myListaEventos);
 		 */
+		timesup=0;
+		System.out.println("---------------------------------------------------------");
+		System.out.println("--------------------El Orden es Ascendente---------------");
+		System.out.println("----por  lo  que  mirara  primero  el ultimo en salir----");
+		System.out.println("----por motivo de  orden, no más.  Asimismo Mirar que ---");
+		System.out.println("----solo se utilizo  1 linea del Java Collection.Sort----");
+		System.out.println("----y  que  se  implemento  la  interfaz  compareTo()----");
+		System.out.println("----haciendo Overrinding a una propiedad de un Objeto----");
+		System.out.println("----Cualquiera,  para  que java  lo  ordene  bajo sus----");
+		System.out.println("----Propios metodos--------------------------------------");
+		System.out.println("---------------------------------------------------------\n");
+
+		
 		while(timesup<myListaEventos.size()){//<<<<<----------------------------------------------------------------
 		/**
 		 *	Verifico que Cola tiene menos personas para asignarlo alli... 
 		 */
+		
 			nuevo= (ObjetoCliente)myListaEventos.get(timesup);
+			if(nuevo.getEstado()){
+				whm=nuevo.whichCola();
+				/**
+				 * Metodo encargado de disminuir las colas y de imprimir el respectivo evento sacado
+				 * de la misma
+				 */
+				if(whm==1 ){
+					nuevo=(ObjetoCliente)myColaBanco1.remove(0);
+					temp=nuevo.resulT();
+					sumandoColaTiempoExtra(myColaBanco1,temp[1]);
+					fila1--;
+				}
+				if(whm==2 ){
+					nuevo=(ObjetoCliente)myColaBanco2.remove(0);
+					temp=nuevo.resulT();
+					sumandoColaTiempoExtra(myColaBanco2,temp[1]);
+					fila2--;
+				}
+				if(whm==3 ){
+					nuevo=(ObjetoCliente)myColaBanco3.remove(0);
+					temp=nuevo.resulT();
+					sumandoColaTiempoExtra(myColaBanco3,temp[1]);
+					fila3--;
+				}
+				if(whm==4 ){
+					nuevo=(ObjetoCliente)myColaBanco4.remove(0);
+					temp=nuevo.resulT();
+					sumandoColaTiempoExtra(myColaBanco4,temp[1]);
+					fila4--;
+		 		}
+				setClientLastImages();
+				
+				System.out.println(nuevo);
+				/** Aquí se retrasa la ejecución un segundo y se captura la
+		         * posible excepción que genera el método, aunque no se hace
+		         * nada en el caso de que se produzca. 0.5 Segundos
+				 */
+		        try {
+		            Thread.currentThread().sleep( 1500 );
+		        }catch( InterruptedException e ){}
+				
 			/**
 			 *Quitar Linea para ver Comportamiento de Creacion de Lista de Eventos
 			 *System.out.println("Estado original:"+ nuevo.getEstado());
 		  // */
+			}
+			timesup++;
 		}
 		
 	}
@@ -480,6 +536,15 @@ public class Panel_fondo extends JPanel implements ActionListener {
 	public ObjetoCliente reConstruyendo(int m, int s, int t, int who){
 		ObjetoCliente h = new ObjetoCliente(0,m,s,t,who);
 		return h;
+	}
+	public void sumandoColaTiempoExtra( List<ObjetoCliente> hola,int seg_extra){
+		int h = hola.size(),x=0;
+		ObjetoCliente u; //me sirve para crear aliases...
+		while (x<h) {
+		    u=(ObjetoCliente)hola.get(x);
+			u.sumandoTiempoExtra(seg_extra);
+			x++;
+		}	
 	}
 
 
