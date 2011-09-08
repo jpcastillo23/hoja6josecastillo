@@ -478,6 +478,7 @@ public class Panel_fondo extends JPanel implements ActionListener {
 				 * Metodo encargado de disminuir las colas y de imprimir el respectivo evento sacado
 				 * de la misma
 				 */
+				try{
 				if(whm==1 ){
 					nuevo=(ObjetoCliente)myColaBanco1.remove(0);
 					temp=nuevo.resulT();
@@ -502,6 +503,7 @@ public class Panel_fondo extends JPanel implements ActionListener {
 					sumandoColaTiempoExtra(myColaBanco4,temp[1]);
 					fila4--;
 		 		}
+				}catch(Exception e){}
 				setClientLastImages();
 				
 				System.out.println(nuevo);
@@ -520,6 +522,8 @@ public class Panel_fondo extends JPanel implements ActionListener {
 			}
 			timesup++;
 		}
+		
+		System.out.println("\n---------------Cerrar Programa y Reiniciar--------------------");
 		
 	}
 	
