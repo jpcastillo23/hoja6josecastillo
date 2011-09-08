@@ -82,13 +82,18 @@ public class ObjetoCliente implements Comparable<ObjetoCliente> {
 				q= new Integer(n.tsalida[0]);
 			}
 			//
-			int lastCmp3 = q.compareTo(p);
-			int lastCmp = g.compareTo(h);
+			int lastCmp = q.compareTo(p);
+			int lastCmp3 = g.compareTo(h);
 	        return (lastCmp != 0 ? lastCmp : lastCmp3);
 	  }
+	/**
+	 * Utilizado para imprimir listas y que imprima por medio de iteradodes
+	 * el toString del Objeto Cliente
+	 */
 	public String toString() {
+		tiempoSalida();
 		String hola =  entradasalida? " Entrando a cola Bancaria ": " Saliendo del Banco ";
-		return "Cliente "+ who + ", Con estado " + hola+"\n "+"Tiempo Espera Total Min:"+resultado[0]+" Seg:"+resultado[1]+" \n";
+		return "Cliente "+ who + ", Con estado " + hola+"\n "+"\nTiempo Espera Total Min:"+resultado[0]+" Seg:"+resultado[1]+" \nTiempo de Salida Min:"+tsalida[0]+" Seg:"+tsalida[1]+"\n";
 	    }
 	/**
 	 * Retorna Hora minuto y segundos de Estancia o de operacion total
@@ -126,30 +131,30 @@ public class ObjetoCliente implements Comparable<ObjetoCliente> {
 	 * cohesion ALTA CON RESULTADO[]
 	 */
 	public void sumandoTiempoExtra(int segundos_extras){
-		int s2=0,s3=resultado[1];	
+		int s2=0,s3=resultado[1];
+		int[] msresul=new int[2];	
 		
 		s2=s3+segundos_extras;
 		while(s3<s2){
 			resultado[1]++;
-			if(resultado[1]>=60){
+			if(resultado[1]>59){
 				resultado[1]=0;  
 				resultado[0]++;	 //minutos
 			}
 			s3++;
 		}
-
 	}
 	/**
 	 * A diferencia de Result este retorna el tiempo cuando es 
 	 * devuelto a la cola.. este es EL TIEMPO DE NGRESO MAS LO QUE TARDA
 	 * le suma lo que hay en resultado, quien guarda los segundos sobrantes
-	 * COHESION NULA
+	 * COHESION NULA. se sobreeescribe el valor, no se suma
 	 */
 	public void  tiempoSalida(){
 		int[] minuto_segundo_resultante = new int[2];
 		minuto_segundo_resultante[1]=resultado[1]+segundosin;
 		minuto_segundo_resultante[0]=minutoin+resultado[0];
-		if(minuto_segundo_resultante[1]>60){
+		if(minuto_segundo_resultante[1]>59){
 			minuto_segundo_resultante[1]=minuto_segundo_resultante[1]-60;
 			minuto_segundo_resultante[0]++;
 		}
@@ -157,9 +162,18 @@ public class ObjetoCliente implements Comparable<ObjetoCliente> {
         System.arraycopy(minuto_segundo_resultante, 0, tsalida, 0, 2);
 		
 	}
+
+	/**
+	 * Saca el tiempo total que ha estado en espera en el banco, eso incluye
+	 * la hora de eentrada, por lo que obtiene el tiempo de salida FINAL DEL BANCO
+	 * MAS NO EL TIEMPO QUE TOTAL QUE ESTUVO ADENTRO DE EL.
+	 */
 	public int[] getTiempoSalida(){
 		return tsalida;
 	}
+	/**
+	 *   Retorna el tiempo de Entrada en forma de matriz
+	 */
 	public int[] tiempoEntrada(){
 		int[] tempo = new int[2];
 		tempo[0]= minutoin;
